@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>学籍管理系统</title>
+  <link rel="stylesheet" href="particles.js/demo/css/style.css"/>
+  <script src="jQuery.js"></script>
+</head>
+<body>
+<div id="particles-js" style="position: absolute;z-index: 1">
+  <strong style="color: white;font-size: 30px;margin: 0 40%;position: inherit"><i>XD学籍管理系统</i></strong>
+</div>
+<canvas id="mytower" width="500px" height="500px" style="position: absolute;z-index: 2;top:10%"></canvas>
+<div id="loginControl" style="width: 100px;height: 200px;position: absolute;z-index: 2;color: white;left: 70%;top: 50%;">
+  <form id="loginform">
+    <label for="userid">账号：</label>
+    <input type="text" id="userid" style="border-radius:10px" name="userid"/><br><br>
+    <label for="pw">密码：</label>
+    <input type="password" id="pw" style="border-radius: 10px" name="pw"/><br><br>
+    <input type="radio" name="kind" value="老师" id="kind"/>老师
+    <input type="radio" name="kind" value="学生" id="kind"/>学生<br><br>
+    <button type="button" style="border-radius: 10px;" id="loginbtn">login</button>
+  </form>
+</div>
+<script src="particles.js/particles.js"></script>
+<script>
+  function  checkfull(id) {
+      if(id.value ==""||id.value == null)
+      {
+          alert("Sorry,该项不能为空!");
+          id.focus();
+          return ;
+      }
+      return true;
+  }
+
+  function  longinkind()
+  {
+     var lgkind = document.getElementsByName('kind');
+     var flag = false;
+     for(var i = 0;i<lgkind.length;i++)
+     {
+         console.log(lgkind[i].checked);
+        if(lgkind[i].checked)
+        {
+            flag = true;
+            rvalue = lgkind[i].value;
+        }
+     }
+     if(flag == false)
+     {
+         alert("请选择你的身份");
+         return ;
+     }
+  }
+
+  function  keydown(e) {
+      var e = e||window.event;
+      //console.log("键盘触发");
+      var index = e.which||e.KeyCode||e.CharCode;
+      if(index == 13)
+      {
+        //  console.log("回车键");
+          document.getElementById('loginbtn').click();
+
+      }
+  }
+
+  document.onkeydown = keydown;
+  $('#loginbtn').click(function () {
+      var userid = document.getElementById('userid');
+      var pw = document.getElementById('pw');
+      if(checkfull(userid)&&checkfull(pw))
+      {
+          var reg = /\d{11}/;
+        if(reg.test(userid.value)==false)
+        {
+            alert("输入的学号不正确");
+            userid.value="";
+            userid.focus();
+        }
+        var data = $('form').serialize();
+        $.ajax({
+            url:"/loginroute",
+            data:data,
+            method:'post',
+            success:function (dat,name)
+            {
+                if(name =="success")
+                {
+                    if(dat == "false")
+                    {
+                        console.log(dat);
+                        alert("登陆失败，请检查用户名或密码");
+                    }
+                    else
+                    {
+                        if(dat == "student")
+                        {
+                            window.location.href="/Homepage";
+                        }
+                        else
+                        {
+                            window.location.href='/Homepage1';
+                        }
+                    }
+                }
+                else
+                {
+                  console.log("err:"+name);
+                }
+            }
+        });
+      }
+  });
+
+  var userid = "<%=userid%>";
+  var pw = "<%=pw%>";
+    window.onload = function  draw()
+    {
+        if(userid && pw)//session密码回填
+        {
+            $('#userid').val(userid);
+            $('#pw').val(pw);
+        }
+        var startx = 350, starty =100,tzhenh= 50;
+        var fw = 50,fh = 30;
+        var sw=70,sh=40;
+        var tw = 100,th = 45;
+        var fourw = 120,fourh = 35;
+        var fivew = 100,fiveh = 100;
+        var rx =startx - (sw-fw)+(tw/2),ry = starty+tzhenh+fh+sh +(th/2),r = (th-10)/2;
+        var rheart = 3;
+        var canvas = document.getElementById('mytower');
+        var context = canvas.getContext('2d');
+        context.strokeStyle="#F8F8FF";
+        context.beginPath();
+        context.lineWidth=3;
+        context.moveTo(startx,starty);
+        context.lineTo(startx,starty+tzhenh);
+        context.stroke();
+        context.closePath();
+        context.beginPath();
+        context.strokeRect(startx,starty+tzhenh,fw,fh);
+        context.closePath();
+        context.beginPath();
+        context.strokeRect(startx - (sw-fw),starty+tzhenh+fh,sw,sh);
+        context.closePath();
+        context.beginPath();
+        context.strokeRect(startx - (sw-fw),starty+tzhenh+fh+sh,tw,th);
+        context.closePath();
+        context.beginPath();
+        context.strokeRect(startx - (sw-fw),starty+tzhenh+fh+sh+th,fourw,fourh);
+        context.closePath();
+        context.beginPath();
+        context.strokeRect(startx - (sw-fw),starty+tzhenh+fh+sh+th+fourh,fivew,fiveh);
+        context.closePath();
+        context.beginPath();
+        context.arc(rx,ry,r,0,Math.PI*2,false);
+        context.stroke();
+        context.closePath();
+        context.beginPath();
+        context.arc(rx,ry,rheart,0,Math.PI*2,false);
+        context.stroke();
+        context.closePath();
+        context.beginPath();
+        context.lineCap="round";
+        context.moveTo(rx,ry);
+        context.lineTo(rx-8,ry-8);
+        context.stroke();
+        context.closePath();
+        context.beginPath();
+        context.lineCap="round";
+        context.moveTo(rx,ry);
+        context.lineTo(rx+10,ry-8);
+        context.stroke();
+        context.closePath();
+    }
+
+    var snowflakes={
+        "particles": {
+            "number": {
+                "value": 10
+            },
+            "shape": {
+                "type": "star"
+            },
+            "color": {
+                "value": "#ff0"//粒子的颜色
+            },
+            "size": {
+                "value": 10,
+                "random": true
+            },
+            "line_linked": {
+                "enable": false
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "bottom",
+                "straight": false
+            }
+        }
+    };
+    particlesJS.load('particles-js',snowflakes);//源码中被我修改,snowflakes为直接传入配置JSON数据
+</script>
+</body>
+</html>

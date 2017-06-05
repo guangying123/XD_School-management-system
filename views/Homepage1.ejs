@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>老师主页</title>
+    <style>
+        body
+        {
+            height: 100%;
+        }
+        canvas
+        {
+            position: absolute;
+        }
+        #header
+        {
+            width: 100%;
+            height: 160px;
+            position: relative;
+        }
+        #maindiv
+        {
+            height: 300px;
+            position: relative;
+            z-index: 100;
+        }
+        img
+        {
+            width: 100px;
+            height: 100px;
+        }
+        li
+        {
+            display: block;
+            float: left;
+        }
+        li div
+        {
+            width: 150px;
+            height:150px ;
+            border-radius: 50%;
+            float: inherit;
+            background-color: white;
+            text-align: center;
+            line-height: 150px;
+            font-size: 20px;
+        }
+        li div:hover
+        {
+            background-color: yellowgreen;
+            cursor: pointer;
+        }
+        ul
+        {
+            margin-top:10% ;
+            margin-left: 10%;
+
+        }
+
+    </style>
+</head>
+<body style="background-color: skyblue" id="mybody">
+<canvas id="mycanvas">
+
+</canvas>
+<div id="header">
+    <table id="imgtable" style="position: absolute;left: 85%">
+        <tr>
+            <td clospan="2" id="imgtd" id="imgtd" style="text-align: right"><img  src="images/My.jpg" alter="头像" style="border-radius: 40%;margin-left: 30%"/></td>
+        </tr>
+        <tr>
+            <td><%=userid%></td>
+            <td><a href="#"  style="text-decoration: none;color: black" onclick="destroy()">|&nbsp;注销</a></td>
+        </tr>
+    </table>
+</div>
+<div id="maindiv">
+    <ul style="list-style: none">
+        <li><div id="presonal">个人中心</div></li>
+        <li style="margin-left: 20%"><div id="searchscore">班级成绩</div></li>
+        <li style="margin-left: 20%"><div id="searchcourse">课表查询</div></li>
+    </ul>
+</div>
+<!--<footer>-->
+<!--<p style="margin: 0 auto"><em>@Copyright GBLCW  Team</em></p>-->
+<!--</footer>-->
+</body>
+<script>
+    var userid = "<%=userid%>";
+    function  destroy()//销毁session
+    {
+        if(confirm("狠心离开我>_<"))
+        {
+            $.ajax({
+                url:'/destroy',
+                success:function (dat,name) {
+                    if(name="success")
+                    {
+                        window.location.href="/";
+                    }
+                }
+            });
+        }
+    }
+    window.onload = function ()
+    {
+        var personal = document.getElementById('presonal');
+        var searchscore = document.getElementById('searchscore');
+        var searchcourse = document.getElementById('searchcourse');
+        var body = document.getElementById('mybody');
+        var archeight = 280+personal.offsetHeight/2;//圆心y    此处存在bug,因为div设置position:relative，所以offsetTop失效
+        var div1 = personal.offsetLeft+personal.offsetWidth/2;
+        var div2 = searchscore.offsetLeft+searchscore.offsetWidth/2;
+        var div3 = searchcourse.offsetLeft +searchcourse.offsetWidth/2;
+        var start = personal.offsetLeft-100;
+        var tend = searchcourse.offsetLeft+searchcourse.offsetWidth + 100;
+        var canvas = document.getElementById('mycanvas');
+        canvas.width=body.offsetWidth;
+        canvas.height=body.offsetHeight;
+        var context = canvas.getContext('2d');
+        context.beginPath();
+        context.strokeStyle="#FFFFFF";
+        context.lineWidth=15;
+        context.beginPath();
+        context.arc((div1+div2)/2,archeight,(div2-div1)/2,0,Math.PI,true);
+        context.stroke();
+        context.closePath();
+        context.beginPath();
+        context.arc((div3+div2)/2,archeight,(div3-div2)/2,0,Math.PI,false);
+        context.stroke();
+        context.closePath();
+    };
+</script>
+<script src="jQuery.js"></script>
+</html>

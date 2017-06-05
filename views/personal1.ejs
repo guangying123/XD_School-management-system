@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+          <meta charset="utf-8"/>
+          <title>个人中心</title>
+          <style type="text/CSS">
+                   body
+                   {
+                     background-color:skyblue;
+                   }
+                   form
+                   {
+                      margin-left:5%;
+                      margin-top:2%;
+                   }
+                   
+                   table,tr
+                   {
+                           width:70%;
+                   }
+                    td
+                    {
+                      width:10%;
+                      height:50px;
+                      font-size:20px;
+                    }
+                    
+                    td:last-child
+                    {
+                      width:   40%;
+                    }
+                    
+                    input[type="text"] 
+                    {
+                      width:90%;
+                      height:70%;
+                      border-radius:10px;
+                      
+                    }
+                    img
+                    {
+                       position:absolute;
+                       left:80%;   
+                       border-radius:50%;
+                    }
+                    select
+                    {
+                      width:30%;
+                      height:30px;
+                      border-radius:10px;
+                    }
+          </style>
+</head>
+<body>       
+                <img src="images/光哥.jpg" alt="这是你的头像"/>
+            <form name="my_form" action="#" method="get">
+                  <table>
+                          
+                         <tr>
+                             <td><h1>基本信息</h1></td>
+                         </tr>
+
+                  </table>  
+                   
+                  <table>
+                     
+                          <tr>
+                             <td>学号</td>
+                             <td>
+                               
+                                  <input type="text" name="xuehao" >
+                          
+                             </td>
+                             </tr>
+
+                             <tr>
+                             <td>姓名</td>
+                             <td>
+
+                                  <input type="text" name="xingming">
+
+                             </td>
+                             </tr>
+
+                             <tr>
+                             <td>性别</td>
+                             <td>
+    
+                                <input type="radio" name="sex" value="female">女
+                                <input type="radio" name="sex" value="male">  男
+
+                             </td>
+                             </tr>
+
+                             <tr>
+                             <td>身份证号</td>
+                             <td>
+
+                                 <input type="text" name="身份证号">
+
+                             </td>
+                             </tr>
+
+                             <tr>
+                             <td>民族</td>
+                             <td>
+
+                                    <input type="text" name="mz" >
+            
+                             </td>
+                             </tr>
+
+                             <tr>
+                             <td>籍贯</td>
+                             <td>
+
+                                  <input type="text" name="jguan">
+
+                              </td>
+                              </tr>
+
+                              <tr>
+                              <td>出生日期</td>
+                              <td>
+           
+                                 <input type="text" name="birth">
+
+                               </td>
+                               </tr>
+      
+                               <tr>
+                               <td>政治面貌</td>
+                               <td>
+
+                                     <input type="radio" name="mianmao" value="共青团员">共青团员
+                                     <input type="radio" name="mianmao" value="预备党员">预备党员
+                                     <input type="radio" name="mianmao" value="党员">党员
+                               </td>
+                               </tr>
+                           
+                </table>
+
+                <hr/>
+              
+                <table>
+                          
+                         <tr>
+                             <td>在校信息</td>
+                         </tr>
+
+                  </table>  
+ 
+                   <hr/>
+
+                  <table>
+           
+                       <tr>
+                       <td>入学日期</td>
+                       <td>
+
+                           <input type="text" name="riqi">
+
+                       </td>
+                       </tr>
+
+                       <tr>
+                       <td>系所</td>
+                       <td>
+ 
+                          <select name="yuan">
+          
+                               <option value="tong">通信工程院</option>
+                               <option value="dian">电子工程院</option>
+                               <option value="ji">计算机学院 </option>
+                               <option value="jidian">机电工程学院</option>
+                          
+                          </select>
+
+                       </td>
+                       </tr>
+
+                       <tr>
+                       <td>专业</td>
+                       <td>
+
+                             <select name="zhuanye">
+
+                                  <option value="jike">计算机科学与技术</option>
+                                  <option value="wanggong">网络工程</option>
+                                  <option value="wulianwang">物联网</option>
+
+                              </select>
+                       </td>
+                       </tr>
+
+                       <tr>
+                       <td>专业方向</td>
+                       <td>
+
+                         <select name="fangxiang">
+                     
+                               <option value="ruanjian">计科软件方向</option>
+                               <option value="wangluo">计科网络方向</option>
+                               <option value="shijue">计科视觉方向</option>
+                               <option value="qianrushi">计科嵌入式方向</option>
+                               <option value="wu">其他</option>
+
+                         </select>
+               
+                       </td>
+                       </tr>
+
+                       <tr>
+                       <td>年级</td>
+                       <td>
+
+                          <select name="nianji">
+
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                             
+                          </select>
+      
+                        </td> 
+                        </tr>
+
+                        <tr>
+                        <td>班级</td>
+                        <td>
+
+                            <input type="text" name="banji">
+
+                        </td>
+                        </tr>
+
+                      </table>
+                     <hr/>   
+                      </form>
+</body>
+</html>
