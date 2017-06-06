@@ -50,26 +50,22 @@
                       border-radius:10px;
                     }
           </style>
+    <script src="jQuery.js"></script>
 </head>
 <body>       
-                <img src="images/光哥.jpg" alt="这是你的头像"/>
+                <img src="images/光哥.jpg" id="myimg" alt="这是你的头像"/>
             <form name="my_form" action="#" method="get">
                   <table>
-                          
                          <tr>
                              <td><h1>基本信息</h1></td>
                          </tr>
-
                   </table>  
                    
                   <table>
-                     
                           <tr>
                              <td>学号</td>
                              <td>
-                               
                                   <input type="text" name="xuehao" >
-                          
                              </td>
                              </tr>
 
@@ -77,7 +73,7 @@
                              <td>姓名</td>
                              <td>
 
-                                  <input type="text" name="xingming">
+                                  <input type="text" name="Sname">
 
                              </td>
                              </tr>
@@ -86,8 +82,8 @@
                              <td>性别</td>
                              <td>
     
-                                <input type="radio" name="sex" value="female">女
-                                <input type="radio" name="sex" value="male">  男
+                                <input type="radio" name="sex" value="女">女
+                                <input type="radio" name="sex" value="男">  男
 
                              </td>
                              </tr>
@@ -96,7 +92,7 @@
                              <td>身份证号</td>
                              <td>
 
-                                 <input type="text" name="身份证号">
+                                 <input type="text" name="IDCard">
 
                              </td>
                              </tr>
@@ -167,12 +163,12 @@
                        <td>系所</td>
                        <td>
  
-                          <select name="yuan">
+                          <select name="yuan" >
           
-                               <option value="tong">通信工程院</option>
-                               <option value="dian">电子工程院</option>
-                               <option value="ji">计算机学院 </option>
-                               <option value="jidian">机电工程学院</option>
+                               <option value="通信工程院">通信工程院</option>
+                               <option value="电子工程院">电子工程院</option>
+                               <option value="计算机学院">计算机学院 </option>
+                               <option value="机电工程学院">机电工程学院</option>
                           
                           </select>
 
@@ -184,11 +180,9 @@
                        <td>
 
                              <select name="zhuanye">
-
-                                  <option value="jike">计算机科学与技术</option>
-                                  <option value="wanggong">网络工程</option>
-                                  <option value="wulianwang">物联网</option>
-
+                                  <option value="计算机科学与技术">计算机科学与技术</option>
+                                  <option value="网络工程">网络工程</option>
+                                  <option value="物联网">物联网</option>
                               </select>
                        </td>
                        </tr>
@@ -199,11 +193,11 @@
 
                          <select name="fangxiang">
                      
-                               <option value="ruanjian">计科软件方向</option>
-                               <option value="wangluo">计科网络方向</option>
-                               <option value="shijue">计科视觉方向</option>
-                               <option value="qianrushi">计科嵌入式方向</option>
-                               <option value="wu">其他</option>
+                               <option value="计科软件方向">计科软件方向</option>
+                               <option value="计科网络方向">计科网络方向</option>
+                               <option value="计科视觉方向">计科视觉方向</option>
+                               <option value="计科嵌入式方向">计科嵌入式方向</option>
+                               <option value="其他">其他</option>
 
                          </select>
                
@@ -215,22 +209,16 @@
                        <td>
 
                           <select name="nianji">
-
                                 <option value="2014">2014</option>
                                 <option value="2015">2015</option>
                                 <option value="2016">2016</option>
-                             
                           </select>
-      
                         </td> 
                         </tr>
-
                         <tr>
                         <td>班级</td>
                         <td>
-
                             <input type="text" name="banji">
-
                         </td>
                         </tr>
 
@@ -238,4 +226,57 @@
                      <hr/>   
                       </form>
 </body>
+<script>
+    var userid = '<%=userid%>';
+    window.onload = function () {
+        var data = {"userid":userid};
+        $.ajax({
+            url:"/Center_back",
+            data:data,
+            dataType:'json',
+            success:function (data,name) {
+                if(name=="success")
+                {
+                    var ss = Object.keys(data);
+                   var inputdom =  $('input[type="text"]');
+                   var inputlen = inputdom.length;
+                   var  j = 0;
+                   for(var i = 0;i < inputlen;i++) // input框的回填处理
+                   {
+                        switch (i)
+                        {
+                            case 2:  j=3; break;
+                            case 6: j = 8;break;
+                            case 7:j =13;break;
+                            default:break;
+                        }
+                        if(data[ss[j]] != null || data[ss[j]]!=undefined)
+                        {
+                            inputdom[i].value=data[ss[j]];
+                        }
+                            j++;
+                   }
+                    data[ss[2]]?$('input[name="sex"][value='+data[ss[2]]+']').attr("checked",true):1;//radio的回填
+                    data[ss[7]]?$('input[name="mianmao"][value='+data[ss[7]]+']').attr("checked",true):1;
+
+                    var selectdom = $('select');//select选项的回填
+                    var selectlen = selectdom.length,k = 9;
+                    for(var i=0;i<selectlen;i++)
+                    {
+                        if(data[ss[k]])
+                        {
+                            selectdom[i].value = data[ss[k]];
+                        }
+                        k++;
+                    }
+                    data[ss[13]]?$('#myimg').attr('src',data[ss[14]]):1;
+
+                    //回填表格
+                }
+            }
+        });
+    };
+</script>
+
+
 </html>
