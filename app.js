@@ -13,6 +13,8 @@ var Homepage = require('./routes/Homepage');
 var Homepage1 = require('./routes/Homepage1');
 var personal = require('./routes/personal');
 var Center_back = require('./routes/Center_back');
+var searchCourse = require('./routes/searchCourse');
+var searchdeal = require('./routes/searchdeal');
 
 var app = express();
 // view engine setup
@@ -43,6 +45,8 @@ app.use('/Homepage',Homepage);//主界面 学生
 app.use('/Homepage1',Homepage1);//主界面  老师
 app.use('/personal',personal);
 app.use('/Center_back',Center_back);
+app.use('/searchCourse',searchCourse);
+app.use('/searchdeal',searchdeal);
 
 
 app.get('/destroy',function (req,res) {

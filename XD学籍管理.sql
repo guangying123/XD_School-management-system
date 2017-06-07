@@ -28,12 +28,67 @@ create table user_pw
     foreign key(userid) references student(xuehao)
 );
 
+-- 创建课程表
+create table Course
+(
+	courseID char(11) ,
+    coursename varchar(255) not null,
+    primary key(courseID)
+);
+
+-- 创建选课表
+create table XKtab
+(
+	courseID char(11),
+    class char(7) not null,
+    cstart int not null,
+    cend int not null,
+    xueqi varchar(10) not null,
+    teacher char(11) not null,
+    room varchar(10) not null,
+    whichday int not null,
+    AMPM char(4) not null,
+    jie int not null,
+    foreign key (courseID) references Course(courseID)
+)
 
 
 
 
 
 
+
+
+
+
+
+delete from XKtab where courseID = "jrjgc000000";
+select * from XKtab
+
+
+alter table XKtab drop column whichday
+
+alter table XKtab add jie int not null
+
+update table XKtab set whichday=4,AMPM="上午",jie=2  where courseID = "jrjgc000000";
+
+
+
+ALTER TABLE XKtab modify class char(7)
+insert into Course(courseID,coursename) values("jrjgc000000","软件工程");
+insert into XKtab values("jrjgc000000","1403013",1,18,"2017-1","姚勇","B601",4,"上午",2);
+
+select * from XKtab
+
+update table XKtab set whichday = 5 where courseID = "jwlcc000000"
+
+
+insert into Course(courseID,coursename) values("jwlaq000000","网络安全");
+insert into XKtab values("jwlaq000000","1403013",1,18,"2017-1","焦晓鹏","B603",2,"上午",1);
+
+
+insert into Course(courseID,coursename) values("jwlcc000000","网络存储");
+insert into XKtab values("jwlcc000000","1403013",1,12,"2017-1","车向泉","B601",2,"下午",2);
 
 
 

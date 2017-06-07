@@ -1,0 +1,400 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>课程表</title>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-size: 26px;
+            font-family: sans-serif;
+            height: 100%;
+            width: 100%;
+        }
+        #wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        #main {
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            -webkit-transform: translateX(0);
+            -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            -o-transform: translateX(0);
+            transform: translateX(0);
+            -webkit-transition: .5s ease all;
+            -moz-transition: .5s ease all;
+            -o-transition: .5s ease all;
+            transition: .5s ease all;
+        }
+        #main-nav {
+            border-bottom: 1px solid rgba(0,0,0,.2);
+            height: 60px;
+        }
+        #off-canvas-menu {
+            text-decoration: none;
+            color: #264899;
+            text-indent: 1.2em;
+            font-size: 32px;
+            display: block;
+            line-height: 1;
+            position: relative;
+        }
+        #side-nav {
+            width: 400px;
+            height: 100%;
+            background: #444;
+            position: absolute;
+            top: 0;
+            -webkit-transform: translateX(-400px);
+            -moz-transform: translateX(-400px);
+            -ms-transform: translateX(-400px);
+            -o-transform: translateX(-400px);
+            transform: translateX(-400px);
+            -webkit-transition: .5s ease all;
+            -moz-transition: .5s ease all;
+            -o-transition: .5s ease all;
+            transition: .5s ease all;
+        }
+        #main.off-display {
+            -webkit-transform: translateX(300px);
+            -moz-transform: translateX(300px);
+            -ms-transform: translateX(300px);
+            -o-transform: translateX(300px);
+            transform: translateX(300px);
+        }
+        #side-nav.off-display {
+            -webkit-transform: translateX(0px);
+            -moz-transform: translateX(0px);
+            -ms-transform: translateX(0px);
+            -o-transform: translateX(0px);
+            transform: translateX(0px);
+        }
+        #close-slide-nav {
+            text-decoration: none;
+            font-size: 14px;
+            color: #888;
+            display: block;
+            text-align: right;
+            margin: 20px;
+        }
+        .info-td{
+
+            font-size: 24px;
+            text-align: center;
+            width:140px;
+            height: 60px;
+            border:2px solid bisque;
+            border-radius: 5px;
+        }
+        .mor-td{
+            /*font-size: 36px;*/
+            text-align: center;
+            width:140px;
+            height: 100px;
+            border:2px solid bisque;
+            border-radius: 5px;
+            box-sizing: content-box;
+        }
+
+        ul {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border-bottom: 1px solid rgba(255,255,255,.2);
+        }
+        li {
+            border-top: 1px solid rgba(255,255,255,.2);
+            line-height: 60px;
+            height: 120px;
+            padding-left: 40px;
+            list-style-type: none;
+            color: #aaa;
+        }
+        .xueqi{
+            font-size: 20px;
+            border: 1px solid red;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .bu{
+            font-size: 24px;
+            background: linear-gradient(to right,#51B0E7,#006084);
+            margin-top: 20px;
+            margin-left: 100px;
+            padding: 10px 50px;
+            border-radius: 10px;
+        }
+        .tablemargin
+        {
+            margin-left: 5%;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div id="main">
+        <div id="main-nav"><a href="" id="off-canvas-menu">Search</a></div>
+        <div>
+            <table id="info-table"  class="tablemargin">
+                <tr id="info"></tr>
+                <table id="mor" class="tablemargin"></table>
+                <table id="lun" class="tablemargin"></table>
+            </table>
+           </div>
+    </div>
+    <div id="side-nav">
+        <a href="" id="close-slide-nav">Close</a>
+        <ul>
+            <li>
+                <p>
+                <label for="xueqi">请选择学期:</label>
+                <select class="xueqi"  id="xueqi">
+                    <option value="2017-1">2017第一学期</option>
+                    <option value="2017-2">2017第二学期</option>
+                </select>
+                </p>
+            </li>
+            <li>
+                <p>
+                <label for="week">请选择周次：</label>
+                <select  id="week" class="xueqi"  id="week">
+
+                </select>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <label for="banji">请选择班级:</label>
+                    <select class="xueqi" id="banji">
+                        <option value="1403013">1403013</option>
+                        <option value="1403014">1403014</option>
+                    </select>
+                </p>
+            </li>
+        </ul>
+        <button class="bu" id="searchbtn">submit</button>
+    </div>
+</div>
+</body>
+<script src="jQuery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#off-canvas-menu,#close-slide-nav').click(function(event) {
+            event.preventDefault();
+            $('#main,#side-nav').toggleClass('off-display');
+        });
+    });
+</script>
+<script>
+    var number=0;
+    !function () {
+        var content=$("#info");
+        var td=$("<td></td>");
+        td.attr("class","info-td");
+        td.text("课程表");
+        content.append(td);
+        for(var i=1;i<8;i++){
+            var td=$('<td></td>');
+            td.text("星期"+i);
+            td.attr('id',"星期"+i);
+            td.attr("class","info-td");
+            content.append(td);
+        }
+    }();
+    !function () {
+        var mor=$('#mor');
+
+        var up=$("<tr></tr>");
+
+        var th=$('<th></th>');
+        th.text("上午");
+        th.attr("class","mor-td");
+        th.attr("rowspan",2);
+        up.append(th);
+        var id=0;
+        for(var i=1;i<8;i++){
+            var td=$('<td></td>');
+            td.attr("class","mor-td");
+            td.attr("id",id);
+            id = id+4;
+            up.append(td);
+        }
+        mor.append(up);
+
+        var down=$('<tr></tr>');
+        id=1;
+        for(var i=1;i<8;i++){
+            var td=$('<td></td>');
+            td.attr("class","mor-td");
+            td.attr("id",id);
+            id=id+4;
+            down.append(td);
+        }
+        mor.append(down);
+    }();
+    !function () {
+        var lun=$("#lun");
+        var up=$('<tr></tr>');
+        var th=$('<th></th>');
+        th.text("下午");
+        th.attr("class","mor-td");
+        th.attr("rowspan",2);
+        up.append(th);
+        var id=2;
+        for(var i=1;i<8;i++){
+            var td=$("<td></td>");
+            td.attr("class","mor-td");
+            td.attr("id",id);
+            id=id+4;
+            up.append(td);
+        }
+        lun.append(up);
+        var down=$("<tr></tr>");
+        id=3;
+        for(var i=1;i<8;i++){
+            var td=$('<td></td>');
+            td.attr("class","mor-td");
+            td.append("<br>");
+            td.attr("id",id);
+            id = id +4;
+            down.append(td);
+        }
+        lun.append(down);
+    }();
+</script>
+
+<script>
+    var week=$("#week");
+    for(var i=1;i<19;i++)
+    {
+        var op=$("<option></option>");
+        op.text("第"+i+"周");
+        op.val(i);
+        week.append(op);
+    }
+</script>
+<script>
+
+        function  dealtab(data)
+        {
+            $.ajax({
+                url:"/searchdeal",
+                data:data,
+                success:function (dat,name)
+                {
+                    if(name="success"&&dat !="error")
+                    {
+                        var dat = JSON.parse(dat),k=0;
+                        var len = dat.length;
+                        var AM_PM = {"上午":0,"下午":2};
+                        for(var j = 0;j<len;j++)
+                        {
+                            k = (dat[j]['whichday'] - 1)*4+AM_PM[dat[j]['AMPM']]+dat[j]['jie'] - 1;
+                            var info = dat[j]['coursename']+" "+dat[j]['room']+" "+dat[j]['teacher'];
+                            $('#'+k.toString()).text(info);
+                        }
+                    }
+                    else
+                    {
+                        alert("数据库繁忙...");
+                    }
+                }
+            });
+        }
+        $('#searchbtn').click(function () {
+            var now1 = new Date();
+            var curday1 = now1.getDay() == 0?7:now1.getDay();
+            $('#星期'+curday1).css('color','black');
+            var data={"xueqi":$('#xueqi').val(),"week":$('#week').val(),"banji":$('#banji').val()};
+            dealtab(data);
+        });
+</script>
+<script>
+    function  isrun(year)
+    {
+        if(year%5 == 0&& year%100!=0||year%400 == 0)
+            return true;
+        return false;
+    }
+    function  getWeek(start,end) //start日期输入格式为 xxxx-M-d 如何2017-8-1  输入要加验证 保证end >= start  返回当前第几周
+    {
+        var aim =[31,28,31,30,31,30,31,31,30,31,30,31];
+        var stemp = start.split('-');
+        var etemp = end.split('-');
+        var syear = parseInt(stemp[0]);
+        var eyear = parseInt(etemp[0]);
+        var smonth = parseInt(stemp[1]);
+        var emonth = parseInt(etemp[1]);
+        var sday = parseInt(stemp[2]);
+        var eday = parseInt(etemp[2]);
+        var day = 0;
+        if(syear == eyear && smonth == emonth)
+        {
+            day = eday - sday +1;
+        }
+        else
+        {
+            day = eday;
+            if (smonth == 2 && isrun(syear)) {
+                day = day + 29 - sday + 1;
+            }
+            else
+            {
+                day += (aim[smonth - 1] - sday + 1);
+            }
+            if (eyear == syear)
+            {
+                for (var i = smonth + 1; i < emonth; i++)
+                {
+                    if (i == 2 && isrun(syear))
+                    {
+                        day += 29;
+                    }
+                    else
+                    {
+                        day += aim[i - 1];
+                    }
+                }
+            }
+            else
+            {
+                for (var i = smonth + 1; i < 13; i++)
+                {
+                    day += aim[i - 1];
+                }
+                for (var i = 1; i < emonth; i++)
+                {
+                    if (i == 2 && isrun(eyear))
+                    {
+                        day += 29;
+                    }
+                    else
+                    {
+                        day += aim[i - 1];
+                    }
+                }
+            }
+        }
+        return Math.ceil((day/7));返回当前周数
+    }
+    var now = new Date();
+    var endteam = now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate();
+    var curday = now.getDay() == 0?7:now.getDay();
+    var curxueqi = now.getMonth()+1 >8? now.getFullYear()+"-"+2:now.getFullYear()+"-"+1;
+    var userid = '<%=userid%>';
+    var curbanji = userid.slice(0,7);
+    var curweek = getWeek('2017-2-27',endteam);
+    var curdata={"xueqi":curxueqi,"week":curweek,"banji":curbanji};
+    alert("当前第"+curweek+"周");
+    dealtab(curdata);
+    $('#星期'+curday).css('color','red');
+
+</script>
+</html>
