@@ -15,6 +15,12 @@ var personal = require('./routes/personal');
 var Center_back = require('./routes/Center_back');
 var searchCourse = require('./routes/searchCourse');
 var searchdeal = require('./routes/searchdeal');
+var scoreSearch = require('./routes/scoreSearch');
+var scoredeal = require('./routes/scoredeal');
+var personal1=require('./routes/personal1');
+var insert=require('./routes/insert');
+var born=require('./routes/born');
+
 
 var app = express();
 // view engine setup
@@ -47,6 +53,11 @@ app.use('/personal',personal);
 app.use('/Center_back',Center_back);
 app.use('/searchCourse',searchCourse);
 app.use('/searchdeal',searchdeal);
+app.use('/scoreSearch',scoreSearch);
+app.use('/scoredeal',scoredeal);
+app.use('/personal1',personal1);
+app.use('/insert',insert);//插入成绩页面
+app.use('/born',born);
 
 
 app.get('/destroy',function (req,res) {
@@ -100,12 +111,25 @@ app.post('/loginroute',function (req,res)
         })
     }
     else  //类型为老师  判断方式和学生类似
-    {
-            req.session.userid = userid;
-            req.session.pw = pw;
-            req.session.kind = kind;
-            res.end("teacher");
-
+    { var sqlte="select * from Tuser_pw where userid=? and pw=? ";
+        var sqltepar=[userid,pw];
+        client.query(sqlte,sqltepar,function (err,result)
+        {
+            if(err)
+            {
+                console.log(err);
+                res.end('false');
+            }
+            else
+            {
+                if(result.length!=0){
+                    req.session.userid = userid;
+                    req.session.pw = pw;
+                    req.session.kind = kind;
+                    res.end("teacher");
+                }
+            }
+        })
     }
 });
 
