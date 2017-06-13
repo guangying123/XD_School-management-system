@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta  charset="utf-8"/>
+    <title>成绩查询</title>
+    <script src="jQuery.js"></script>
+    <style>
+        body
+        {
+            background-color: skyblue;
+            width: 100%;
+            height: 100%;
+        }
+        ul
+        {
+            list-style: none;
+            position: absolute;
+            left: 2%;
+            top: 5%;
+            border-left: 2px solid gainsboro;
+            padding-left: 10px;
+        }
+        li:first-child,li:last-child
+        {
+
+            font-size: 30px;
+            border-radius: 10px;
+        }
+        li
+        {
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 40px;
+            border-bottom: 1px solid darkgray;
+        }
+        table
+        {
+            margin-left: 20%;
+            margin-top: 7%;
+            width: 60%;
+            text-align: center;
+        }
+        td
+        {
+            height: 30px;
+            border: 2px solid white;
+        }
+        .liclass
+        {}
+    </style>
+</head>
+<body>
+    <ul id="myul">
+        <li class="liclass">按学期查</li>
+        <li>2014-2</li>
+        <li>2015-1</li>
+        <li>2015-2</li>
+        <li>2016-1</li>
+        <li>2016-2</li>
+        <li>2017-1</li>
+    </ul>
+        <table id="mytable">
+            <tr><td colspan="4"><strong>成绩表：</strong></td></tr>
+        </table>
+</body>
+    <script>
+      var  t =  $('li[class!="liclass"]');
+      var first = $('li:eq(0)')[0];
+      var flag = -1;
+      t.hide();
+      var myul = document.getElementById('myul');
+      function  cleartable()
+      {
+        $('#mytable tr:not(:first)').remove();
+      }
+
+      function  searchOneTerm(dat,term)
+      {
+          cleartable();
+          var len = dat.length;
+          $('<tr><td colspan="3">第 '+term+'学期成绩...</td></tr>').appendTo($('#mytable'));
+          for(var i = 0;i<len;i++)
+          {
+            $('<tr><td>'+dat[i].coursename+'</td><td>'+dat[i].xuefen+'</td><td>'+dat[i].score+'</td></tr>').appendTo($('#mytable'));
+          }
+      }
+      myul.onclick = function (e)
+      {
+            if(e.target == first)
+            {
+                flag = flag*(-1);
+                flag>0?t.show():t.hide();
+            }
+            else
+            {
+               var  str = e.target.textContent;
+               var userId = '<%=userid%>';
+               var data = {"userId":userId,"term":str};
+               //console.log(data);
+               $.ajax({
+                   url:'/scoredeal',
+                   data:data,
+                   success:function (dat,name) {
+                       if(name=="success"&& dat !="false")
+                       {
+                           var d = JSON.parse(dat);
+                            searchOneTerm(d,str);
+                       }else
+                       {
+                           console.log(name);
+                           alert("数据库繁忙..");
+                       }
+                   }
+               });
+            }
+      };
+
+    </script>
+
+
+</html>

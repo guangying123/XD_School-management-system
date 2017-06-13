@@ -156,6 +156,11 @@
                 <p>
                 <label for="xueqi">请选择学期:</label>
                 <select class="xueqi"  id="xueqi">
+                    <option value="2014-2">2014第二学期</option>
+                    <option value="2015-1">2015第一学期</option>
+                    <option value="2015-2">2015第二学期</option>
+                    <option value="2016-1">2016第一学期</option>
+                    <option value="2016-2">2016第二学期</option>
                     <option value="2017-1">2017第一学期</option>
                     <option value="2017-2">2017第二学期</option>
                 </select>
@@ -308,10 +313,15 @@
                 }
             });
         }
+
+
         $('#searchbtn').click(function () {
             var now1 = new Date();
             var curday1 = now1.getDay() == 0?7:now1.getDay();
             $('#星期'+curday1).css('color','black');
+            $('#mor td').html('');
+            $('#lun td').html('');
+
             var data={"xueqi":$('#xueqi').val(),"week":$('#week').val(),"banji":$('#banji').val()};
             dealtab(data);
         });

@@ -50,10 +50,11 @@
                       border-radius:10px;
                     }
           </style>
+    <script src="jQuery.js"></script>
 </head>
 <body>       
                 <img src="images/光哥.jpg" alt="这是你的头像"/>
-            <form name="my_form" action="#" method="get">
+            <form name="my_form" action="#" method="get" id="myform">
                   <table>
                           
                          <tr>
@@ -65,10 +66,10 @@
                   <table>
                      
                           <tr>
-                             <td>学号</td>
+                             <td>工号</td>
                              <td>
                                
-                                  <input type="text" name="xuehao" >
+                                  <input type="text" name="gonghao" >
                           
                              </td>
                              </tr>
@@ -77,7 +78,7 @@
                              <td>姓名</td>
                              <td>
 
-                                  <input type="text" name="xingming">
+                                  <input type="text" name="tname">
 
                              </td>
                              </tr>
@@ -86,8 +87,7 @@
                              <td>性别</td>
                              <td>
     
-                                <input type="radio" name="sex" value="female">女
-                                <input type="radio" name="sex" value="male">  男
+                                <input type="text" name="sex">
 
                              </td>
                              </tr>
@@ -96,25 +96,15 @@
                              <td>身份证号</td>
                              <td>
 
-                                 <input type="text" name="身份证号">
+                                 <input type="text" name="IDcard">
 
                              </td>
                              </tr>
-
-                             <tr>
-                             <td>民族</td>
-                             <td>
-
-                                    <input type="text" name="mz" >
-            
-                             </td>
-                             </tr>
-
                              <tr>
                              <td>籍贯</td>
                              <td>
 
-                                  <input type="text" name="jguan">
+                                  <input type="text" name="jiguan">
 
                               </td>
                               </tr>
@@ -125,16 +115,6 @@
            
                                  <input type="text" name="birth">
 
-                               </td>
-                               </tr>
-      
-                               <tr>
-                               <td>政治面貌</td>
-                               <td>
-
-                                     <input type="radio" name="mianmao" value="共青团员">共青团员
-                                     <input type="radio" name="mianmao" value="预备党员">预备党员
-                                     <input type="radio" name="mianmao" value="党员">党员
                                </td>
                                </tr>
                            
@@ -155,7 +135,7 @@
                   <table>
            
                        <tr>
-                       <td>入学日期</td>
+                       <td>入教日期</td>
                        <td>
 
                            <input type="text" name="riqi">
@@ -164,67 +144,22 @@
                        </tr>
 
                        <tr>
-                       <td>系所</td>
+                       <td>在职学院</td>
                        <td>
- 
-                          <select name="yuan">
-          
-                               <option value="tong">通信工程院</option>
-                               <option value="dian">电子工程院</option>
-                               <option value="ji">计算机学院 </option>
-                               <option value="jidian">机电工程学院</option>
-                          
-                          </select>
+                           <input type="text" name="xueyuan">
 
                        </td>
                        </tr>
 
-                       <tr>
-                       <td>专业</td>
-                       <td>
 
-                             <select name="zhuanye">
+                      <tr>
+                          <td>级别</td>
+                          <td>
 
-                                  <option value="jike">计算机科学与技术</option>
-                                  <option value="wanggong">网络工程</option>
-                                  <option value="wulianwang">物联网</option>
+                              <input type="text" name="jibie">
 
-                              </select>
-                       </td>
-                       </tr>
-
-                       <tr>
-                       <td>专业方向</td>
-                       <td>
-
-                         <select name="fangxiang">
-                     
-                               <option value="ruanjian">计科软件方向</option>
-                               <option value="wangluo">计科网络方向</option>
-                               <option value="shijue">计科视觉方向</option>
-                               <option value="qianrushi">计科嵌入式方向</option>
-                               <option value="wu">其他</option>
-
-                         </select>
-               
-                       </td>
-                       </tr>
-
-                       <tr>
-                       <td>年级</td>
-                       <td>
-
-                          <select name="nianji">
-
-                                <option value="2014">2014</option>
-                                <option value="2015">2015</option>
-                                <option value="2016">2016</option>
-                             
-                          </select>
-      
-                        </td> 
-                        </tr>
-
+                          </td>
+                      </tr>
                         <tr>
                         <td>班级</td>
                         <td>
@@ -238,4 +173,43 @@
                      <hr/>   
                       </form>
 </body>
+<script>
+    var userid='<%=userid%>';
+    window.onload=function () {
+        var data={"userid":userid};
+        $.ajax({
+            data:data,
+            url:"/Center_back/teacher",
+            dataType:"json",
+            success:function (data,type) {
+
+                if(type=="success"){
+                    var str=Object.keys(data);
+                    var inputdom =  $('input');
+                    var inlen=inputdom.length;
+
+
+                    for(var i=0;i<inlen;i++){
+                        for(var j=0;j<=str.length;j++)
+                        {
+                            var po=str[j];
+                            if(inputdom[i].name == "riqi"&&inputdom[i].name==po)
+                            {
+                                var tempdate = new Date(data[po]);
+                                inputdom[i].value = tempdate.getUTCFullYear() +'-'+(tempdate.getMonth()+1)+'-'+tempdate.getDate();
+                                continue;
+                            }
+                            if(inputdom[i].name==po){
+                                inputdom[i].value=data[po];
+                            }
+                        }
+                    }
+                    $('#myform input').attr("disabled","disabled");
+                    $('#myform select').attr("disabled","disabled");
+                }
+            }
+        });
+    };
+
+</script>
 </html>

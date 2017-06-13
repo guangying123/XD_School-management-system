@@ -54,7 +54,7 @@
 </head>
 <body>       
                 <img src="images/光哥.jpg" id="myimg" alt="这是你的头像"/>
-            <form name="my_form" action="#" method="get">
+            <form name="my_form" action="#" method="get" id="myform">
                   <table>
                          <tr>
                              <td><h1>基本信息</h1></td>
@@ -252,6 +252,14 @@
                         }
                         if(data[ss[j]] != null || data[ss[j]]!=undefined)
                         {
+                            if(i == 5||i==6)
+                            {
+                                var strr = new Date(data[ss[j]]);
+                                var tempbirth = strr.getFullYear()+"-"+(strr.getMonth()+1)+"-"+strr.getDate();
+                                inputdom[i].value=tempbirth;
+                                j++;
+                                continue;
+                            }
                             inputdom[i].value=data[ss[j]];
                         }
                             j++;
@@ -270,8 +278,9 @@
                         k++;
                     }
                     data[ss[13]]?$('#myimg').attr('src',data[ss[14]]):1;
-
                     //回填表格
+                    $('#myform input').attr("disabled","disabled");
+                    $('#myform select').attr("disabled","disabled");
                 }
             }
         });

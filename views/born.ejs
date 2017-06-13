@@ -1,0 +1,135 @@
+<!DocType html>
+<html>
+<head>
+    <title>学号生成</title>
+</head>
+
+<script src="jQuery.js"></script>
+<style>
+    html,body{
+        margin: 0;
+        width: 100%;
+        background: #a8e4ff;
+    }
+    input[type='text']{
+        width:60%;
+        height: 24px;
+        border-radius: 10px;
+    }
+    span{
+        font-size: 24px;
+    }
+    #wrap{
+        padding-top: 100px;
+        margin: 0;
+        box-sizing: border-box;
+        width:100%;
+        text-align: center;
+
+    }
+
+    #xy{
+        width:60%;
+        height: 24px;
+        border-radius: 10px;
+    }
+    #nian{
+        margin-bottom: 100px;
+    }
+    #xueyuan{
+        margin-bottom: 100px;
+    }
+    #renshu{
+        margin-bottom: 100px;
+    }
+    button{
+        font-size: 30px;
+        border: 1px solid deepskyblue;
+        border-radius: 5px;
+        padding: 10px 70px;
+        background: linear-gradient(to right, #8497ff, #444bff);
+
+    }
+</style>
+<body>
+
+<div id="wrap">
+
+    <div id="nian">
+        <label>
+            <span>年份：</span>
+            <input type="text" id="nf">
+        </label>
+    </div>
+
+    <div id="xueyuan">
+        <span>学院:</span>
+        <select id="xy">
+            <option id="03">计算机学院</option>
+            <option id="01">通信学院</option>
+            <option id="02">电子工程学院</option>
+        </select>
+        <!--<input id="course" type="text">-->
+    </div>
+
+    <div id="renshu">
+        <span>人数：</span>
+        <input type="number" id="rs" value="100">
+    </div>
+
+    <button type="submit" id="deal">生成</button>
+
+</div>
+
+<script>
+    var time=new Date().getFullYear();
+    $('#nf').val(time.toString());
+
+     $('#deal').click(function () {
+         var time=$('#nf').val().substring(2);
+         var id=$('#xy>option').attr("id");
+
+         var rs=$('#rs').val();
+         var i;
+         var data={};
+         for(i=1;i<=rs;i++){
+             var banji=parseInt(i/50+1);
+             var ren=i%50;
+             if(ren==0){
+                 var xid=time+id+'01'+(banji-1).toString()+"0050";
+             }
+             else  if(ren<10){
+                 var xid=time+id+'01'+banji.toString()+"000"+ren;
+             }
+             else
+                 var xid=time+id+'01'+banji.toString()+"00"+ren;
+
+
+             var maiddle={"userid":xid,"pw":"000000"};
+             data[i]=maiddle;
+
+         }
+         data[0]=rs;
+//         for(var i=0;i<=rs;i++){
+//             console.log(data[i]);
+//         }
+
+         $.ajax({
+             url:'/Center_back/born',
+             data:data,
+             success:function (data,type) {
+                 if(type=="success"){
+                         alert("生成成功!");
+
+                 }
+                 else{
+                     alert("生成失败")
+                 }
+             }
+
+         })
+
+     });
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!Doctype html>
+
+<html>
+<head>
+    <title>成绩插入</title>
+
+    <script src="jQuery.js"></script>
+    <style>
+        html,body{
+            margin: 0;
+            width: 100%;
+            background: #0eff91;
+        }
+        input[type='text']{
+            width:30%;
+            height: 24px;
+            border-radius: 5px;
+        }
+        span{
+            font-size: 24px;
+        }
+        button{
+            font-size: 24px;
+            border: 1px solid deepskyblue;
+            border-radius: 5px;
+            background: linear-gradient(to right, #8497ff, #444bff);
+            padding: 2px 5px;
+            margin-top: 35px;
+            margin-bottom: 50px;
+
+        }
+
+        #contenier{
+            padding-top: 100px;
+            margin:0;
+            box-sizing: border-box;
+            width:100%;
+            text-align: center;
+        }
+
+        #class_chose{
+            width:40%;
+            height:24px;
+            border-radius: 5px;
+        }
+        #class_bu{
+            font-size: 24px;
+            border:1px solid #b9def0;
+            padding: 2px 10px;
+            margin-left: 20px;
+        }
+        #student_chose{
+            width:30%;
+            height:24px;
+            border-radius: 5px;
+        }
+        #subject_chose{
+            width:30%;
+            height:24px;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="contenier">
+    <div id="class">
+        <span>选择班级：</span>
+        <select id="class_chose">
+
+        </select>
+    </div>
+
+    <button type="submit" id="class_bu">选择班级</button>
+
+    <div id="subject">
+        <span>课程：</span>
+        <select id="subject_chose">
+
+        </select>
+
+    </div>
+
+    <div id="student">
+        <span>学号：</span>
+        <select id="student_chose">
+
+        </select>
+
+    </div>
+
+    <div id="point">
+        <span>成绩：</span>
+        <input type="text" id="point_in">
+    </div>
+
+    <button type="submit" id="up_score">提交成绩</button>
+</div>
+
+<script>
+    window.onload=function () {
+        $.ajax({
+            url:"/Center_back/deal_class",
+            dataType:"json",
+            data:"",
+            success:function (data,type) {
+                if(type=="success"){
+                    console.log(data.class);
+                    var op=$("<option></option>");
+                    op.text(data.class);
+                    var se=$("#class_chose");
+                    se.append(op);
+
+                }
+                else{
+                    console.log(data);
+                }
+            }
+        })
+    }
+
+    $("#class_bu").click(function () {
+        var content=$('#class_chose').find("option:selected").val();
+        var data={"class":content};
+
+        var student_data=content;//.substring(content.length-2);
+        var data_student={"student":student_data};
+        $.ajax({
+            url:"/Center_back/deal_class_chose",
+            data:data,
+            dataType:"json",
+            success:function (data,type) {
+               // console.log(data);
+                if(type=="success"){
+                    for(var i=0;i<data.length;i++){
+                        var op=$("<option></option>");
+                        op.text(data[i].Coursename);
+                        op.attr("id",data[i].courseID);
+                        var se=$("#subject_chose");
+                        se.append(op);
+                    }
+                }
+                else{
+                    console.log(data);
+                }
+            }
+        })
+
+        $.ajax({
+            url:"/Center_back/deal_student",
+            data:data_student,
+            dataType:"json",
+            success:function (data,name) {
+                if(name=="success"){
+                   // console.log(data);
+                    for(var i=0;i<data.length;i++){
+                        var op=$("<option></option>");
+                        op.text(data[i].xuehao);
+                        op.attr("id",data[i].xuehao);
+                        var se=$("#student_chose");
+                        se.append(op);
+                    }
+                }
+                else
+                    console.log(data);
+
+            }
+
+        })
+    })
+
+    $('#up_score').click(function () {
+        var subject=$('#subject_chose').find("option:selected").attr("id");
+        var sub=$('#subject_chose').find("option:selected").val();
+        var student=$('#student_chose').find("option:selected").attr("id");
+        var point=$("#point_in").val();
+        var data={"sub":subject,"stu":student,"point":point};
+        console.log(data);
+
+        $.ajax({
+            url:"/Center_back/deal_point",
+            data:data,
+            //dataType:"json",
+            success:function (data,type) {
+                if(type=="success"){
+                    console.log("success");
+                    alert(student+"的"+sub+"课程插入成功");
+                }
+                else
+                    alert("插入失败");
+            }
+        })
+    })
+</script>
+
+</body>
+</html>

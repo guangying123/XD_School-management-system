@@ -77,14 +77,15 @@
 <div id="maindiv">
     <ul style="list-style: none">
         <li><div id="presonal">个人中心</div></li>
-        <li style="margin-left: 20%"><div id="searchscore">班级成绩</div></li>
-        <li style="margin-left: 20%"><div id="searchcourse">课表查询</div></li>
+        <li style="margin-left: 20%"><div id="searchscore">分数录入</div></li>
+        <li style="margin-left: 20%"><div id="searchcourse">账号生成</div></li>
     </ul>
 </div>
 <!--<footer>-->
 <!--<p style="margin: 0 auto"><em>@Copyright GBLCW  Team</em></p>-->
 <!--</footer>-->
 </body>
+<script src="jQuery.js"></script>
 <script>
     var userid = "<%=userid%>";
     function  destroy()//销毁session
@@ -130,6 +131,19 @@
         context.stroke();
         context.closePath();
     };
+    
+    document.getElementById("maindiv").onclick = function(e)
+    {
+        console.log(e.target.id);
+      switch(e.target.id)
+      {
+        case "presonal":window.location.href="/personal1";  break;
+        case "searchscore" : window.location.href="/insert";  break;
+        case  "searchcourse": window.location.href="/born";break;
+        default : break;
+      }
+    };
+    
 </script>
-<script src="jQuery.js"></script>
+
 </html>
